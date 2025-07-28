@@ -1,316 +1,257 @@
-# 🇹🇷 Turkish E-commerce Product Information Extraction
+# 🇹🇷 Turkish E-commerce Product Information Extraction with Fine-Tuned LLaMA
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yourusername/turkish-ecommerce-extraction/blob/main/notebooks/Turkish_E_commerce_Extraction.ipynb)
-[![Ollama](https://img.shields.io/badge/Ollama-Compatible-blue.svg)](https://ollama.ai)
+🧠 Convert messy Turkish HTML into clean structured JSON — 100% offline with Ollama  
+📄 License: MIT | ✅ [Open in Colab](https://colab.research.google.com/drive/1cYXaDjN18XauiCccqiR4gNK2AN1fNoIa?usp=sharing) | 💻 [GitHub Repo](https://github.com/AsliCY/turkish-ecommerce-ai)
 
-> Fine-tuned LLaMA 3.2 3B model for extracting structured product information from Turkish e-commerce websites using Ollama
+---
 
 ## 🎯 What This Project Does
 
-This project fine-tunes a **LLaMA 3.2 3B model** to extract structured product information from Turkish e-commerce HTML pages. It converts messy HTML into clean JSON format using **Ollama** for local, private inference.
+This project fine-tunes a **LLaMA 3.2 3B** model to extract **structured product information from Turkish e-commerce HTML pages**.
 
-Perfect for:
-- 🕷️ **Web Scraping**: Automate product data collection
-- 💰 **Price Monitoring**: Track prices across multiple sites  
-- 📊 **Market Research**: Analyze competitor products
+It transforms unstructured HTML into clean JSON format with **local, private inference** using **Ollama**.
+
+### 🧾 Perfect for:
+- 🕷️ **Web Scraping**: Automate product data collection  
+- 💰 **Price Monitoring**: Track prices across sites  
+- 📊 **Market Research**: Analyze competitors  
 - 🔄 **Data Migration**: Transfer products between platforms
+
+---
 
 ## 🌟 Key Features
 
-- **🇹🇷 Turkish Language Specialized**: Optimized for Turkish e-commerce sites
-- **🚀 High Accuracy**: >95% JSON extraction success rate
-- **⚡ Fast Inference**: 2-5 seconds per product
-- **🔒 100% Local**: Runs entirely on your machine with Ollama
-- **📱 Simple Usage**: Just use `ollama run` command
-- **🎛️ No Dependencies**: Only requires Ollama installation
+| Feature | Description |
+|---------|-------------|
+| 🇹🇷 **Turkish Language Specialized** | Fine-tuned on realistic Turkish HTML structures |
+| 🧠 **High Accuracy** | >90–95% JSON extraction success rate |
+| ⚡ **Fast Inference** | 2–5 seconds per product |
+| 🔒 **100% Local** | Fully offline with Ollama |
+| 🛠️ **No Dependencies** | Only Ollama is needed |
+| 🧱 **Easily Extendable** | Add categories, features, or HTML formats |
 
-## 🎬 Quick Demo
+---
 
-**Input:**
+## 🎬 Quick Text-Based Demo
+
 ```bash
 echo '<div class="product">
-    <h1>iPhone 15 Pro - Apple</h1>
-    <div class="price">54.999 TL</div>
-    <div class="brand">Apple</div>
+  <h1>iPhone 15 Pro - Apple</h1>
+  <div class="price">54.999 TL</div>
+  <div class="brand">Apple</div>
 </div>' | ollama run turkish-ecommerce
 ```
 
 **Output:**
 ```json
 {
-  "name": "iPhone 15 Pro - Apple",
-  "price": "54.999 TL",
+  "name": "iPhone 15 Pro",
   "brand": "Apple",
+  "price": "54.999 TL",
   "category": "Telefon"
 }
 ```
 
+---
+
 ## 🚀 Quick Start
 
-### Step 1: Install Ollama
+### 🛠️ Step 1: Install Ollama
+
 ```bash
 # macOS/Linux
 curl -fsSL https://ollama.ai/install.sh | sh
-
-# Windows: Download from https://ollama.ai
 ```
 
-### Step 2: Train Model (Google Colab)
-1. **Click the Colab badge** above to open the training notebook
-2. **Run all cells** - takes 30-45 minutes total
-3. **Download the GGUF model** via Google Drive
+➡️ **For Windows**: Download from https://ollama.ai
 
-### Step 3: Deploy Model Locally
+### 🧠 Step 2: Train the Model (Optional)
+
+**Option A:** Use our pre-trained model (recommended)
+- 🔗 [Download from Hugging Face](https://huggingface.co/Asli-123/turkish-ecommerce-model)
+
+**Option B:** Train yourself
+- Open the [Fine-Tuning Notebook](https://colab.research.google.com/drive/1cYXaDjN18XauiCccqiR4gNK2AN1fNoIa?usp=sharing)
+- Generates 500+ synthetic HTML/JSON pairs
+- Fine-tunes LLaMA with LoRA
+- Exports model in GGUF format
+- Runs in ~30–45 minutes on free GPU
+
+### 🖥️ Step 3: Deploy Locally with Ollama
+
 ```bash
-# Place the downloaded files in a folder
-cd turkish-ecommerce-model/
-
-# Create the model in Ollama
+# Create model (in model folder)
 ollama create turkish-ecommerce -f turkish_ecommerce.modelfile
 
-# Test the model
-echo "Test HTML" | ollama run turkish-ecommerce
+# Run it
+echo '<html>...</html>' | ollama run turkish-ecommerce
 ```
+
+---
 
 ## 💻 Usage Examples
 
-### Basic Command Line
+### Basic Usage
 ```bash
-# Extract from HTML file
+# Extract from file
 ollama run turkish-ecommerce < product.html
 
 # Interactive mode
 ollama run turkish-ecommerce
-# Then paste HTML and press Enter
-
-# With custom prompt
-echo "HTML'den ürün bilgilerini çıkar: <div>...</div>" | ollama run turkish-ecommerce
 ```
 
-### Shell Scripts
+### Batch Processing
 ```bash
-# Simple extraction script
-#!/bin/bash
+# Process multiple files
 for file in *.html; do
-    echo "Processing: $file"
-    ollama run turkish-ecommerce < "$file" > "${file%.html}.json"
+  echo "Processing: $file"
+  ollama run turkish-ecommerce < "$file" > "${file%.html}.json"
 done
 ```
 
-### Web Scraping Integration
-```bash
-# Download and extract in one command
-curl -s "https://example-site.com/product/123" | ollama run turkish-ecommerce
-```
+---
 
 ## 📊 Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| **Success Rate** | >95% |
-| **Model Size** | 1.8GB (GGUF) |
-| **Response Time** | 2-5 seconds |
-| **Supported Categories** | 5 (Phone, Laptop, Headphones, TV, Shoes) |
-| **Training Time** | 15-30 minutes |
-| **RAM Usage** | 5-6GB during inference |
+| **Success Rate** | >90–95% |
+| **Model Size** | ~1.8 GB (GGUF) |
+| **Inference Time** | 2–5 seconds |
+| **Categories Supported** | 5 (Phone, Laptop, etc.) |
+| **Training Time** | ~30 minutes (Colab) |
+| **RAM Usage** | ~5–6 GB |
+
+---
 
 ## 🏗️ Architecture
 
 ```
 ┌─────────────┐    ┌─────────────────┐    ┌──────────────┐
-│ HTML Input  │ -> │ Ollama Model    │ -> │ JSON Output  │
-│ (Turkish)   │    │ (LLaMA 3.2 3B)  │    │ (Structured) │
+│ HTML Input  │ -> │ Ollama + LLaMA  │ -> │ JSON Output  │
 └─────────────┘    └─────────────────┘    └──────────────┘
 ```
 
 **Technical Stack:**
 - **Base Model**: LLaMA 3.2 3B Instruct
-- **Fine-tuning**: LoRA (Low-Rank Adaptation) 
-- **Training**: Unsloth (Google Colab)
-- **Deployment**: Ollama (Local inference)
-- **Format**: GGUF Q4_K_M quantization
+- **Fine-tuning**: LoRA via Unsloth
+- **Deployment**: Ollama (GGUF format)
+- **Quantization**: Q4_K_M (optimized size/performance)
 
-## 🛠️ Installation & Setup
-
-### Prerequisites
-- 8GB+ RAM (16GB recommended)
-- ~5GB disk space for model
-- Modern CPU (4+ cores recommended)
-
-### Complete Setup
-```bash
-# 1. Install Ollama
-curl -fsSL https://ollama.ai/install.sh | sh
-
-# 2. Train model in Colab (or download pre-trained)
-# Open the Colab notebook and follow instructions
-
-# 3. Download model files to local machine
-# turkish_ecommerce.modelfile
-# unsloth.Q4_K_M.gguf
-
-# 4. Create model in Ollama
-ollama create turkish-ecommerce -f turkish_ecommerce.modelfile
-
-# 5. Test model
-ollama run turkish-ecommerce
-```
-
-### Verify Installation
-```bash
-# Check if model is available
-ollama list | grep turkish-ecommerce
-
-# Test with sample HTML
-echo '<div><h1>Test Product</h1><span>100 TL</span></div>' | ollama run turkish-ecommerce
-```
-
-## 🎓 Training Your Own Model
-
-The training happens in Google Colab (free GPU) and takes about 30-45 minutes:
-
-### Dataset Creation
-- **500 synthetic examples** covering Turkish e-commerce patterns
-- **5 categories**: Telefon, Laptop, Kulaklık, Televizyon, Ayakkabı
-- **Realistic pricing** in Turkish Lira
-- **Various HTML structures** from different sites
-
-### Fine-tuning Process
-- **Base**: `unsloth/Llama-3.2-3B-Instruct-bnb-4bit`
-- **Method**: LoRA (Low-Rank Adaptation)
-- **Settings**: rank=64, alpha=128, 3 epochs
-- **Hardware**: T4 GPU (free in Colab)
-
-### Model Export
-- **GGUF conversion** for Ollama compatibility
-- **Q4_K_M quantization** for optimal size/performance
-- **Google Drive download** for easy transfer
-
-## 🌍 Supported Websites
-
-Works with various Turkish e-commerce HTML structures:
-- **Trendyol** product pages
-- **Hepsiburada** listings
-- **GittiGidiyor** auctions
-- **N11** products
-- **Amazon.com.tr** Turkish products
-- **Custom sites** with standard e-commerce patterns
-
+---
 
 ## 🧪 Testing & Validation
 
-### Sample Test Files
-Create test HTML files and validate extraction:
+### Quick Test
 ```bash
-# Test iPhone extraction
-echo '<div class="product"><h1>iPhone 15 Pro</h1></div>' > test.html
-ollama run turkish-ecommerce < test.html
-
-# Validate JSON output
+# Create a sample test file
+echo '<div><h1>iPhone 15 Pro</h1><span>54.999 TL</span></div>' > test.html
 ollama run turkish-ecommerce < test.html | jq .
 ```
 
-### Automated Testing
+### Batch Testing
 ```bash
 # Test multiple files
 for file in test_*.html; do
-    echo "Testing: $file"
-    result=$(ollama run turkish-ecommerce < "$file")
-    echo "$result" | jq . > "${file%.html}_result.json"
+  result=$(ollama run turkish-ecommerce < "$file")
+  echo "$result" | jq . > "${file%.html}_result.json"
 done
 ```
 
-## 🔧 Customization
+---
 
-### Adding New Categories
-Edit the training notebook to include new product types:
+## 🧩 Customization
+
+### ➕ Add New Categories
+Edit the Colab notebook:
+
 ```python
-products["Kozmetik"] = ["L'Oreal Foundation", "Maybelline Mascara"]
+products["Kozmetik"] = ["L'Oreal Foundation"]
 features_by_category["Kozmetik"] = ["SPF 30", "Su Geçirmez"]
 ```
 
-### Site-Specific Optimization
-Train with specific website HTML patterns for better accuracy.
+### 🌐 Multi-language Support
+Add English or Arabic examples in dataset generation step.
 
-### Multi-Language Support
-Extend dataset with English/Arabic examples for broader coverage.
+### 🛠️ Site-Specific Training
+Use custom HTML formats (e.g., Trendyol vs. Hepsiburada) in training samples.
+
+---
+
+## 🌍 Supported Turkish Sites
+
+Tested on HTML formats from:
+- **Trendyol**
+- **Hepsiburada**
+- **GittiGidiyor**
+- **N11**
+- **Amazon.com.tr**
+- And any custom e-commerce site with consistent markup
+
+---
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how:
+We welcome contributions!
 
-### 🐛 Bug Reports
-- HTML structures that fail extraction
-- Unexpected output formats
-- Performance issues
+### 🐛 Report Bugs
+- HTML parsing failures
+- Incorrect JSON fields
 
-### ✨ Feature Requests  
-- Support for new e-commerce sites
-- Additional product categories
-- New extraction fields
+### ✨ Suggest Features
+- New categories
+- Image extraction
+- Multi-language models
 
-### 🔧 Code Contributions
-- Improved training data
-- Better HTML parsing
+### 🔧 Improve Code or Training Data
+- Better templates
+- More diverse HTML
 - Documentation improvements
+
+---
 
 ## 📝 Changelog
 
 ### v1.0.0 (Current)
-- ✅ LLaMA 3.2 3B fine-tuned model
-- ✅ Ollama deployment ready
-- ✅ 95%+ accuracy on test cases
-- ✅ Support for 5 product categories
+- ✅ Fine-tuned LLaMA 3.2 3B on Turkish HTML
+- ✅ Ollama deployment (GGUF Q4_K_M)
+- ✅ 5 categories supported
+- ✅ >90% JSON extraction accuracy
 
-### Planned Features
-- 🔄 Support for product images
-- 🌐 Multi-language extraction  
-- 📱 Mobile-optimized parsing
-- 🎯 Site-specific models
+### 🚧 Coming Soon
+- 🌐 Multi-language support
+- 🖼️ Image metadata extraction
+- 📱 Mobile-friendly layout parsing
+- 🧠 Custom site adapters
+
+---
 
 ## 🔒 Privacy & Security
 
-- **100% Local**: No data sent to external APIs
-- **Open Source**: Complete transparency
-- **No Tracking**: No analytics or data collection
-- **GDPR Compliant**: Process data locally
+- ✅ **100% Local**: No external API calls
+- 🔍 **Transparent**: Fully open-source
+- ❌ **No Tracking**: No telemetry or data collection
+- ✅ **GDPR Compliant**
 
-## 📞 Support & Community
+---
 
-- **🐛 Issues**: [GitHub Issues](https://github.com/AsliCY/turkish-ecommerce-extraction/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/AsliCY/turkish-ecommerce-extraction/discussions)
+## 📎 Links
 
-## 📄 License
+- 🔗 [GitHub Repository](https://github.com/AsliCY/turkish-ecommerce-ai)
+- 🧠 [Hugging Face Model](https://huggingface.co/Asli-123/turkish-ecommerce-model)
+- 🚀 [Fine-Tuning Colab Notebook](https://colab.research.google.com/drive/1cYXaDjN18XauiCccqiR4gNK2AN1fNoIa?usp=sharing)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
 
 ## 🙏 Acknowledgments
 
-- **Meta AI** for the LLaMA 3.2 base model
-- **Unsloth** for efficient fine-tuning framework  
-- **Ollama** for local deployment capabilities
-- **Turkish E-commerce Community** for inspiration
+- **Meta AI** for LLaMA
+- **Unsloth** for efficient fine-tuning
+- **Ollama** for elegant local LLM deployment
+- **Turkish NLP community** for inspiration
 
 ---
 
-<div align="center">
-
-**⭐ Star this repo if you find it useful! ⭐**
-
-**🔒 Private • 🚀 Fast • 🇹🇷 Turkish-optimized**
-
-</div>img.shields.io/github/stars/yourusername/turkish-ecommerce-extraction)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/turkish-ecommerce-extraction)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/turkish-ecommerce-extraction)
-![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/turkish-ecommerce-extraction)
-
----
-
-<div align="center">
-
-**⭐ Star this repo if you find it useful! ⭐**
-
-**🤝 Contributions welcome • 📝 MIT Licensed • 🇹🇷 Made with ❤️ for Turkish e-commerce**
-
-</div>
+⭐️ **Star this repo if you find it useful!**  
+📬 **Contributions and feedback welcome!**  
+🇹🇷 **Built with ❤️ for Turkish E-commerce**
